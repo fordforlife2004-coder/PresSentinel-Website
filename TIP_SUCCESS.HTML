@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Receipt Generated | The Press-Town Sentinel{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 620px; margin: 2rem auto; text-align: center;">
+  <h2 style="color: var(--primary-navy);">Submission Successfully Ingested</h2>
+  <p style="margin-top: 0.5rem; color: #4b5563;">
+    Your briefing has been recorded into our verification queue under category: <strong>{{ category }}</strong>.
+  </p>
+
+  <p style="margin-top: 1.5rem; font-weight: 600;">Cryptographic Verification Receipt:</p>
+  <div class="receipt-token">{{ token }}</div>
+
+  <p style="font-size: 0.85rem; color: #6b7280;">
+    Retain this token for your personal records. It validates receipt without exposing personal identifying metadata.
+  </p>
+  <div style="margin-top: 1.5rem;">
+    <a href="{{ url_for('home') }}" style="color: var(--secondary-crimson); font-weight: bold; text-decoration: none;">&larr; Return to Sentinel Wire</a>
+  </div>
+</div>
+{% endblock %}
