@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Press-Town Sentinel | Liberty, Law, and Public Accountability</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sentinel: {
+              navy: '#152238',
+              navyDark: '#0e1726',
+              crimson: '#8b0000',
+              crimsonHover: '#680000',
+              gold: '#c5a059',
+              goldLight: '#e4c88e',
+              paper: '#f9f9fb',
+              border: '#dbe1e8'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f6f7f9;
+      color: #1a202c;
+      font-family: 'Inter', sans-serif;
+    }
+    .serif-headline {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .modal-backdrop {
+      background-color: rgba(14, 23, 38, 0.75);
+      backdrop-filter: blur(4px);
+    }
+    ::selection {
+      background: #c5a059;
+      color: #152238;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-sentinel-gold selection:text-sentinel-navy">
+
+  <!-- Header & Wire Banner -->
+  <header class="bg-sentinel-navy text-white border-b-4 border-sentinel-gold shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-1.5 border-b border-slate-700 text-xs flex justify-between items-center text-slate-300">
+      <div class="flex items-center space-x-3">
+        <span class="inline-flex items-center text-emerald-400 font-semibold tracking-wide">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1.5 animate-ping"></span>
+          WIRE ACTIVE
+        </span>
+        <span class="hidden sm:inline text-slate-400">|</span>
+        <span class="hidden sm:inline">Upper Iowa & Heartland Regional Investigative Desk</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span id="currentDateStr" class="font-mono text-slate-300"></span>
+        <span class="bg-sentinel-crimson text-white text-[10px] font-bold px-2 py-0.5 rounded tracking-wider uppercase">Open Records Desk</span>
+      </div>
+    </div>
+
+    <!-- Masthead -->
+    <div class="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded bg-sentinel-gold flex items-center justify-center text-sentinel-navy font-bold text-xl shadow">
+            §
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider uppercase serif-headline text-white">
+            The Press-Town Sentinel
+          </h1>
+        </div>
+        <p class="mt-1 text-xs sm:text-sm text-sentinel-gold font-medium italic tracking-wide">
+          Liberty, Law, and Public Accountability for the Heartland
+        </p>
+      </div>
+
+      <nav class="flex items-center flex-wrap gap-2 pt-2 md:pt-0" aria-label="Main Navigation">
+        <button onclick="switchTab('dispatches')" id="tab-dispatches" 
+          class="nav-tab px-4 py-2 rounded text-sm font-semibold transition-all duration-150 bg-sentinel-gold text-sentinel-navy shadow">
+          Dispatches
+        </button>
+        <button onclick="switchTab('dockets')" id="tab-dockets" 
+          class="nav-tab px-4 py-2 rounded text-sm font-semibold transition-all duration-150 text-slate-200 hover:text-white hover:bg-slate-800">
+          Dockets (Inquiries)
+        </button>
+        <button onclick="switchTab('whistleblower')" id="tab-whistleblower" 
+          class="nav-tab px-4 py-2 rounded text-sm font-semibold transition-all duration-150 text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"></path>
+          </svg>
+          Whistleblower Desk
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 py-8 w-full flex-1">
+    
+    <!-- Manifesto Callout -->
+    <section class="bg-white border-l-4 border-sentinel-crimson rounded-r-lg shadow-sm p-4 sm:p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="serif-headline">
+        <p class="text-base sm:text-lg italic text-slate-800">
+          "Our liberty depends on the freedom of the press, and that cannot be limited without being lost."
+        </p>
+        <cite class="block text-xs font-semibold uppercase tracking-wider text-sentinel-navy mt-1 not-italic">
+          — Thomas Jefferson, 1786
+        </cite>
+      </div>
+      <div class="shrink-0">
+        <span class="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-300">
+          Independent Civic Watchdog
+        </span>
+      </div>
+    </section>
+
+    <!-- Dispatches View -->
+    <div id="section-dispatches" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-300 gap-2">
+        <div>
+          <h2 class="text-2xl font-bold serif-headline text-sentinel-navy">Investigative Dispatches</h2>
+          <p class="text-sm text-slate-600">Unfiltered public records, fiscal forensic analysis, and governance audits.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-500 font-mono">Showing: All Verified Reports</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="dispatchesContainer"></div>
+    </div>
+
+    <!-- Dockets View -->
+    <div id="section-dockets" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-slate-300">
+        <div>
+          <h2 class="text-2xl font-bold serif-headline text-sentinel-navy">Inquiry Dockets & Public Records</h2>
+          <p class="text-sm text-slate-600">Tracking open state-level records requests, closed executive sessions, and audit filings.</p>
+        </div>
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <input type="text" id="docketSearch" oninput="filterDockets()" 
+            placeholder="Search active dockets..." 
+            class="w-full md:w-72 px-3 py-2 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-sentinel-navy focus:border-transparent">
+          <button onclick="clearDocketSearch()" class="px-3 py-2 text-xs font-semibold bg-slate-200 text-slate-700 rounded hover:bg-slate-300">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 pt-1" id="categoryFilterPills"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="docketsContainer"></div>
+    </div>
+
+    <!-- Whistleblower View -->
+    <div id="section-whistleblower" class="hidden space-y-6">
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-amber-50 border-l-4 border-amber-600 p-4 sm:p-5 rounded-r shadow-sm mb-6 text-amber-900">
+          <div class="flex items-start">
+            <svg class="w-6 h-6 text-amber-600 mr-3 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div class="text-sm">
+              <h3 class="font-bold text-amber-950 text-base mb-1">Operational Security (OpSec) Advisory</h3>
+              <p class="leading-relaxed">
+                If disclosing classified municipal documents or privileged communications, <strong>do not</strong> use a government-issued terminal, employer network, or residential ISP connection. For maximum confidentiality, submit via the Tor Browser or an encrypted air-gapped station.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="tipFormContainer" class="bg-white border border-slate-300 rounded-lg shadow-sm p-6 sm:p-8">
+          <div class="mb-6 pb-4 border-b border-slate-200">
+            <h2 class="text-2xl font-bold serif-headline text-sentinel-navy">Confidential Tip Intake Desk</h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">Submissions are received into an isolated queue. No third-party ad networks or tracking scripts are loaded on this portal.</p>
+          </div>
+
+          <form id="whistleblowerForm" onsubmit="handleTipSubmission(event)" class="space-y-5">
+            <div>
+              <label for="tipJurisdiction" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Investigation Jurisdiction *
+              </label>
+              <select id="tipJurisdiction" required class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-sentinel-navy focus:outline-none text-sm">
+                <option value="">Select Primary Category...</option>
+                <option value="Local Government Transparency">Local Government & Council Transcripts</option>
+                <option value="Public Infrastructure">Public Infrastructure & Fleet Procurement</option>
+                <option value="Agricultural & Environmental">Agricultural Drainage & Environmental Compliance</option>
+                <option value="Civil Liberties">Civil Liberties, Due Process & Policing</option>
+                <option value="Other">Other Regulatory / Ethics Breach</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="tipSubject" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Headline / Subject Summary *
+              </label>
+              <input type="text" id="tipSubject" required placeholder="e.g. Unpublicized easement vote during closed session" 
+                class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-sentinel-navy focus:outline-none text-sm">
+            </div>
+
+            <div>
+              <label for="tipDetails" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Evidence Log & Detailed Disclosure *
+              </label>
+              <textarea id="tipDetails" rows="6" required 
+                placeholder="List specific meeting dates, ledger invoice numbers, municipal officials involved, contract IDs, or location coordinates..." 
+                class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-sentinel-navy focus:outline-none text-sm font-mono text-slate-800"></textarea>
+            </div>
+
+            <div>
+              <label for="tipCallback" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Encrypted Callback Alias (Optional)
+              </label>
+              <input type="text" id="tipCallback" placeholder="Signal username, SimpleLogin alias, or leave empty for total anonymity" 
+                class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-sentinel-navy focus:outline-none text-sm">
+              <span class="text-[11px] text-slate-500 mt-1 block">Leaving this blank ensures strictly unidirectional disclosure.</span>
+            </div>
+
+            <div class="pt-2 flex items-center justify-between">
+              <span class="text-xs text-slate-500 italic">SHA-256 Verified Ingest</span>
+              <button type="submit" 
+                class="px-6 py-2.5 bg-sentinel-crimson hover:bg-sentinel-crimsonHover text-white font-semibold rounded text-sm transition-colors shadow">
+                Transmit Confidential Tip
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="tipSuccessContainer" class="hidden bg-white border-2 border-sentinel-gold rounded-lg shadow-lg p-6 sm:p-8 text-center">
+          <div class="w-16 h-16 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+
+          <h3 class="text-2xl font-bold serif-headline text-sentinel-navy">Transmission Ingested & Encrypted</h3>
+          <p class="text-sm text-slate-600 mt-2 max-w-lg mx-auto">
+            Your brief has been assigned an internal docket pointer. Keep your verification key safe for offline records inquiry.
+          </p>
+
+          <div class="my-6 p-4 bg-slate-900 rounded-lg text-sentinel-gold inline-block w-full max-w-md mx-auto shadow-inner">
+            <span class="block text-xs font-mono uppercase text-slate-400 mb-1">Cryptographic Token Receipt</span>
+            <div id="receiptTokenBadge" class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-emerald-400 select-all">
+              STNL-0000-0000
+            </div>
+            <span class="text-[11px] text-slate-400 block mt-2">Zero-Knowledge Verification Hash</span>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 rounded p-4 text-xs text-slate-600 text-left max-w-md mx-auto space-y-2">
+            <div class="flex justify-between">
+              <span class="font-semibold text-slate-700">Classification:</span>
+              <span id="receiptJurisdiction" class="font-mono text-sentinel-navy"></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-semibold text-slate-700">Timestamp:</span>
+              <span id="receiptTimestamp" class="font-mono"></span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-semibold text-slate-700">Transmission Integrity:</span>
+              <span class="text-emerald-700 font-bold">VERIFIED</span>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3 justify-center">
+            <button onclick="copyReceiptToken()" class="px-4 py-2 text-xs font-semibold bg-slate-800 text-white rounded hover:bg-slate-900 transition flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+              </svg>
+              Copy Verification Token
+            </button>
+            <button onclick="resetWhistleblowerPortal()" class="px-4 py-2 text-xs font-semibold border border-slate-300 text-slate-700 rounded hover:bg-slate-100 transition">
+              Submit Another Brief
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Reader -->
+  <div id="articleModal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border-2 border-sentinel-navy">
+      <div class="bg-sentinel-navy p-4 text-white flex justify-between items-start border-b-2 border-sentinel-gold">
+        <div>
+          <span id="modalCategory" class="text-xs uppercase font-bold text-sentinel-gold tracking-wider"></span>
+          <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold serif-headline mt-1 leading-snug"></h3>
+          <p id="modalDate" class="text-xs text-slate-300 font-mono mt-1"></p>
+        </div>
+        <button onclick="closeArticleModal()" class="text-slate-300 hover:text-white p-1 rounded hover:bg-slate-800 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 text-slate-800 leading-relaxed text-sm sm:text-base">
+        <div id="modalSummary" class="font-medium text-slate-700 border-l-4 border-sentinel-crimson pl-3 py-1 bg-slate-50 italic"></div>
+        <div id="modalFullContent" class="space-y-3 font-serif"></div>
+        
+        <div class="mt-6 pt-4 border-t border-slate-200">
+          <h4 class="text-xs font-bold uppercase text-sentinel-navy tracking-wider mb-2">Referenced Public Exhibits:</h4>
+          <ul id="modalExhibits" class="text-xs font-mono text-slate-600 space-y-1 list-disc pl-5"></ul>
+        </div>
+      </div>
+
+      <div class="bg-slate-100 px-6 py-3 border-t border-slate-200 flex justify-between items-center text-xs">
+        <span class="text-slate-500">Document ID: <strong id="modalDocId" class="font-mono text-slate-700"></strong></span>
+        <button onclick="closeArticleModal()" class="px-4 py-1.5 bg-sentinel-navy text-white font-semibold rounded hover:bg-slate-800 transition">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white text-xs px-4 py-2.5 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center space-x-2 border-l-4 border-sentinel-gold">
+    <span id="toastMessage">Notice</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-sentinel-navy text-slate-400 text-xs border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <h4 class="text-white font-bold uppercase tracking-wider mb-2 serif-headline">The Press-Town Sentinel</h4>
+        <p class="leading-relaxed">
+          An unincorporated independent civic watchdog organization serving the Upper Iowa and broader Midwest heartland region. All investigations are based on public record requests, sworn disclosures, and municipal filings.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold uppercase tracking-wider mb-2">Editorial Mandate</h4>
+        <ul class="space-y-1.5">
+          <li>&bull; Strict source protection under shield jurisprudence</li>
+          <li>&bull; Forensic budget ledger reconciliation</li>
+          <li>&bull; Open meetings and chapter 22 compliance</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold uppercase tracking-wider mb-2">Secure Drop</h4>
+        <p class="mb-2">Send encrypted dispatches or authenticated FOIA audit logs directly to our desk intake.</p>
+        <span class="font-mono text-[11px] text-sentinel-gold">PGP: 4A8B 91F2 C0D8 3E71 99E2</span>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 py-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
+      <p>&copy; 2026 The Press-Town Sentinel. Public trust accountability journalism.</p>
+      <p>Published without corporate underwriting or municipal subsidies.</p>
+    </div>
+  </footer>
+
+  <script>
+    const articlesData = [
+      {
+        id: "PTS-2026-081",
+        title: "County Drainage Board Approves Undisclosed Commercial Easements",
+        category: "Land Rights & Zoning",
+        date: "October 10, 2026",
+        summary: "Internal county records uncover expedited approvals for private tile lines and commercial runoff easements without standard public zoning hearings.",
+        fullText: [
+          "An analysis of county supervisory drainage dockets between March and September reveals an irregular protocol in the authorization of heavy-bore agricultural runoff tie-ins.",
+          "According to internal correspondence obtained under state open records inquiries, private agribusiness developers secured expedited waivers bypassing customary downstream landowner notices.",
+          "Downstream farmers in the watershed reported sudden localized soil saturation and structural bank scouring following unannounced line connections. County supervisors when approached cited historical maintenance exemptions, yet municipal ledgers show private engineering contractor reimbursements exceeding statutory thresholds without bidding."
+        ],
+        exhibits: [
+          "Exhibit A: County Supervisory Minute Docket #402-B (Redacted)",
+          "Exhibit B: Engineering runoff variance memo dated May 14, 2026",
+          "Exhibit C: Watershed hydrology differential comparison chart"
+        ]
+      },
+      {
+        id: "PTS-2026-079",
+        title: "Municipal Budget Audit: Discrepancies in Heavy Fleet Procurement",
+        category: "Taxpayer Accountability",
+        date: "October 04, 2026",
+        summary: "A quarterly audit of city equipment leases details a 28% markup on third-party broker fees for winter utility vehicles.",
+        fullText: [
+          "Public expenditure ledgers from the Department of Public Works reveal significant anomalies in heavy machine procurement contracts executed over the past two fiscal years.",
+          "Rather than purchasing snow removal vehicles and graders via the statewide master agreement consortium, city administration contracted through an out-of-county intermediary LLC registered weeks before the bid deadline.",
+          "The contract generated $142,000 in additional administrative surcharges compared to direct equipment manufacturer bids. When Sentinel researchers requested the bidding scoring matrices, department officials claimed the records were 'preliminary work products' exempt from disclosure—a claim contested by state ombudsman rulings."
+        ],
+        exhibits: [
+          "Exhibit A: DPW Equipment Lease Agreement Contract #88-C",
+          "Exhibit B: State Procurement Consortium comparative price sheet",
+          "Exhibit C: Formal Chapter 22 Appeal filed with the Public Information Board"
+        ]
+      },
+      {
+        id: "PTS-2026-072",
+        title: "Zoning Board Irregularities Cloud Commercial Corridor Expansion",
+        category: "Municipal Governance",
+        date: "September 24, 2026",
+        summary: "Notice of public hearing was posted inside an access-restricted service vestibule rather than the town bulletin, stifling resident testimony.",
+        fullText: [
+          "Citizen testimony gathered at last Tuesday's emergency town forum indicates widespread frustration over a newly designated heavy commercial buffer zone abutting residential tracts on the town's east side.",
+          "State open-meetings statutory guidelines require visible public notice at least 24 hours prior to zoning revisions. Photographic evidence authenticated by Sentinel field staff proves the physical notice was taped behind an employee keycard door at the water works plant.",
+          "The resulting rezoning cleared the way for a 40,000-square-foot distribution hub without input from 84 neighboring landowners whose property valuations face immediate reassessment."
+        ],
+        exhibits: [
+          "Exhibit A: Time-stamped photo of restricted-door meeting announcement",
+          "Exhibit B: Petition of 84 affected freeholders demanding rezoning revocation",
+          "Exhibit C: Planning commission audio recording excerpt from August 12"
+        ]
+      }
+    ];
+
+    const docketsData = [
+      {
+        id: "DKT-01",
+        category: "Local Government Transparency",
+        title: "Executive Session Audio & Closed Meeting Rationale Log",
+        cases: 4,
+        status: "Active FOIA Contested",
+        description: "Monitoring school board and town council closed-door discussions invoking statutory personnel exceptions to deliberate on capital bond projects."
+      },
+      {
+        id: "DKT-02",
+        category: "Public Infrastructure",
+        title: "County Bridge Replacement Contracts & Concrete Sourcing",
+        cases: 6,
+        status: "Audit in Progress",
+        description: "Comparative structural review between billed concrete grades and field core testings on five secondary road bridges completed in 2025."
+      },
+      {
+        id: "DKT-03",
+        category: "Agricultural & Environmental",
+        title: "Nitrate Monitoring Wells & Confined Feeding Runoff Reports",
+        cases: 3,
+        status: "Records Ingested",
+        description: "Reconciling state agency water sampling reports against municipal well intake records over an 18-month timeline."
+      },
+      {
+        id: "DKT-04",
+        category: "Civil Liberties",
+        title: "Civil Asset Forfeiture Disclosures & Equipment Surplus",
+        cases: 2,
+        status: "Court Review",
+        description: "Examining 1033 program military-grade surplus distribution and unitemized seizure bank accounts managed by county sheriff operations."
+      }
+    ];
+
+    let currentSelectedCategory = "All";
+
+    function updateDateDisplay() {
+      const now = new Date();
+      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+      document.getElementById('currentDateStr').textContent = now.toLocaleDateString('en-US', options).toUpperCase();
+    }
+
+    function switchTab(tabId) {
+      const sections = ['dispatches', 'dockets', 'whistleblower'];
+      sections.forEach(id => {
+        const sec = document.getElementById(`section-${id}`);
+        const tab = document.getElementById(`tab-${id}`);
+        if (id === tabId) {
+          sec.classList.remove('hidden');
+          tab.className = "nav-tab px-4 py-2 rounded text-sm font-semibold transition-all duration-150 bg-sentinel-gold text-sentinel-navy shadow";
+        } else {
+          sec.classList.add('hidden');
+          tab.className = "nav-tab px-4 py-2 rounded text-sm font-semibold transition-all duration-150 text-slate-200 hover:text-white hover:bg-slate-800";
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderDispatches() {
+      const container = document.getElementById('dispatchesContainer');
+      container.innerHTML = articlesData.map(article => `
+        <article class="bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between overflow-hidden">
+          <div class="p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[11px] font-bold uppercase tracking-wider bg-sentinel-navy text-white px-2.5 py-0.5 rounded">
+                ${article.category}
+              </span>
+              <span class="text-xs text-slate-500 font-mono">${article.date}</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold serif-headline text-sentinel-navy mb-2 leading-tight hover:text-sentinel-crimson transition-colors cursor-pointer" onclick="openArticleModal('${article.id}')">
+              ${article.title}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed">
+              ${article.summary}
+            </p>
+          </div>
+          <div class="bg-slate-50 px-5 sm:px-6 py-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] font-mono text-slate-500">${article.id}</span>
+            <button onclick="openArticleModal('${article.id}')" class="text-xs font-bold text-sentinel-crimson hover:text-sentinel-crimsonHover inline-flex items-center gap-1">
+              Read Briefing 
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function openArticleModal(articleId) {
+      const article = articlesData.find(a => a.id === articleId);
+      if (!article) return;
+
+      document.getElementById('modalCategory').textContent = article.category;
+      document.getElementById('modalTitle').textContent = article.title;
+      document.getElementById('modalDate').textContent = `Filed: ${article.date} | Bureau Verification Complete`;
+      document.getElementById('modalSummary').textContent = `Executive Abstract: ${article.summary}`;
+      document.getElementById('modalDocId').textContent = article.id;
+
+      const fullContentDiv = document.getElementById('modalFullContent');
+      fullContentDiv.innerHTML = article.fullText.map(para => `<p>${para}</p>`).join('');
+
+      const exhibitsUl = document.getElementById('modalExhibits');
+      exhibitsUl.innerHTML = article.exhibits.map(ex => `<li>${ex}</li>`).join('');
+
+      document.getElementById('articleModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeArticleModal() {
+      document.getElementById('articleModal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function renderCategoryPills() {
+      const categories = ["All", ...new Set(docketsData.map(d => d.category))];
+      const pillsContainer = document.getElementById('categoryFilterPills');
+      pillsContainer.innerHTML = categories.map(cat => `
+        <button onclick="setDocketCategory('${cat}')" 
+          class="category-pill text-xs px-3 py-1.5 rounded-full font-medium transition ${currentSelectedCategory === cat ? 'bg-sentinel-navy text-white' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-100'}">
+          ${cat}
+        </button>
+      `).join('');
+    }
+
+    function setDocketCategory(category) {
+      currentSelectedCategory = category;
+      renderCategoryPills();
+      filterDockets();
+    }
+
+    function filterDockets() {
+      const query = document.getElementById('docketSearch').value.toLowerCase().trim();
+      const container = document.getElementById('docketsContainer');
+
+      const filtered = docketsData.filter(docket => {
+        const matchesCategory = (currentSelectedCategory === "All" || docket.category === currentSelectedCategory);
+        const matchesSearch = docket.title.toLowerCase().includes(query) ||
+                              docket.description.toLowerCase().includes(query) ||
+                              docket.category.toLowerCase().includes(query) ||
+                              docket.status.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center bg-white border border-dashed border-slate-300 rounded-lg">
+            <p class="text-slate-500 text-sm">No active dockets matching the specified query.</p>
+            <button onclick="clearDocketSearch()" class="mt-2 text-xs text-sentinel-crimson font-bold underline">Clear filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(docket => `
+        <div class="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:border-slate-300 transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono uppercase bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">
+                ${docket.id}
+              </span>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded ${
+                docket.status.includes('Active') ? 'bg-amber-100 text-amber-900 border border-amber-300' :
+                docket.status.includes('Court') ? 'bg-red-100 text-red-900 border border-red-300' :
+                'bg-emerald-100 text-emerald-900 border border-emerald-300'
+              }">
+                ${docket.status}
+              </span>
+            </div>
+            <h4 class="text-lg font-bold text-sentinel-navy serif-headline mb-1">${docket.title}</h4>
+            <div class="text-xs font-medium text-sentinel-gold mb-3">${docket.category}</div>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">${docket.description}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <span class="font-medium text-slate-700">${docket.cases} Active FOIA / Record Leads</span>
+            <span class="text-sentinel-crimson font-semibold hover:underline cursor-pointer" onclick="switchTab('whistleblower')">Submit Evidence &rarr;</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function clearDocketSearch() {
+      document.getElementById('docketSearch').value = '';
+      currentSelectedCategory = "All";
+      renderCategoryPills();
+      filterDockets();
+    }
+
+    function handleTipSubmission(event) {
+      event.preventDefault();
+      
+      const jurisdiction = document.getElementById('tipJurisdiction').value;
+      const subject = document.getElementById('tipSubject').value.trim();
+      const details = document.getElementById('tipDetails').value.trim();
+
+      if (!jurisdiction || !subject || !details) {
+        showToast("Please provide all mandatory disclosures.");
+        return;
+      }
+
+      const array = new Uint8Array(6);
+      window.crypto.getRandomValues(array);
+      const hexString = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('').toUpperCase();
+      const formattedToken = `STNL-${hexString.slice(0, 4)}-${hexString.slice(4, 8)}-${hexString.slice(8, 12)}`;
+
+      document.getElementById('receiptTokenBadge').textContent = formattedToken;
+      document.getElementById('receiptJurisdiction').textContent = jurisdiction;
+      document.getElementById('receiptTimestamp').textContent = new Date().toUTCString();
+
+      document.getElementById('tipFormContainer').classList.add('hidden');
+      document.getElementById('tipSuccessContainer').classList.remove('hidden');
+
+      showToast("Whistleblower transmission securely ingested.");
+    }
+
+    function copyReceiptToken() {
+      const token = document.getElementById('receiptTokenBadge').textContent;
+      const textArea = document.createElement("textarea");
+      textArea.value = token;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Token copied to clipboard for offline safekeeping.");
+      } catch (err) {
+        showToast("Manual copy required: " + token);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function resetWhistleblowerPortal() {
+      document.getElementById('whistleblowerForm').reset();
+      document.getElementById('tipSuccessContainer').classList.add('hidden');
+      document.getElementById('tipFormContainer').classList.remove('hidden');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    window.addEventListener('click', function(e) {
+      const modal = document.getElementById('articleModal');
+      if (e.target === modal) {
+        closeArticleModal();
+      }
+    });
+
+    window.onload = function() {
+      updateDateDisplay();
+      renderDispatches();
+      renderCategoryPills();
+      filterDockets();
+    };
+  </script>
+</body>
+</html>
