@@ -1,0 +1,40 @@
+Town Sentinel{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div>
+        <div class="brand-title"><a href="<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}The Press-{{ url_for('home') }}">The Press-Town Sentinel</a></div>
+        <span class="brand-sub">{{ tagline }}</span>
+      </div>
+      <nav>
+        <a href="{{ url_for('home') }}">Dispatches</a>
+        <a href="{{ url_for('investigations') }}">Dockets</a>
+        <a href="{{ url_for('submit_tip') }}">Whistleblower Desk</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="opsec-notice" style="background-color: #fee2e2; border-color: #fca5a5; color: #991b1b;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; {{ current_year }} The Press-Town Sentinel. Independent civic accountability journalism.</p>
+  </footer>
